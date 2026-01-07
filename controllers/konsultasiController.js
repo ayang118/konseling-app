@@ -76,7 +76,9 @@ export const konsultasiSiswa = (req, res) => {
             nama_diagnosis: d.nama_diagnosis,
             deskripsi: d.deskripsi,
             confidence: Math.round(bestScore * 100),
-            tips: d.tips ? d.tips.split(",") : []
+            tips: d.tips
+            ? d.tips.split("|").map(t => t.trim())
+            : []
           }
         });
       }
