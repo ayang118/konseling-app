@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sistem Pakar Konseling Siswa</title>
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar fade-in">
+  <div class="container nav-inner">
+    <div class="logo">SPK Konseling</div>
+    <div class="nav-links">
+      <a href="#tentang">Tentang</a>
+      <a href="#alur">Alur</a>
+      <a href="#manfaat">Manfaat</a>
+      <a href="login.html" class="btn-login">Login</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="container hero-grid">
+
+    <div class="hero-text reveal">
+      <h1>
+        Sistem Pakar Konseling<br>
+        Akademik & Pribadi Siswa
+      </h1>
+      <p>
+        Membantu siswa SMK Kesehatan Muhammadiyah Kota Bogor
+        memahami permasalahan akademik dan pribadi secara mandiri,
+        cepat, dan terarah menggunakan metode
+        <b>Forward Chaining</b>.
+      </p>
+
+      <a href="login.html" class="btn-primary">
+        Mulai Konseling
+      </a>
+    </div>
+
+    <div class="hero-cards">
+      <div class="hero-card reveal">
+        <i class="bi bi-person-heart"></i>
+        <h3>Konseling Mandiri</h3>
+        <p>
+          Siswa dapat melakukan konsultasi awal
+          tanpa harus langsung bertemu guru BK.
+        </p>
+      </div>
+
+      <div class="hero-card reveal">
+        <i class="bi bi-diagram-3"></i>
+        <h3>Sistem Pakar</h3>
+        <p>
+          Analisis berbasis aturan dan gejala
+          menggunakan metode Forward Chaining.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= TENTANG ================= -->
+<section id="tentang" class="section">
+  <div class="container reveal">
+    <h2>Apa itu Sistem Pakar Konseling?</h2>
+    <p class="section-text">
+      Sistem Pakar Konseling adalah sistem berbasis komputer
+      yang meniru cara berpikir seorang konselor dalam menganalisis
+      masalah siswa. Sistem ini membantu siswa mengenali permasalahan
+      akademik maupun pribadi berdasarkan gejala yang dialami,
+      kemudian memberikan rekomendasi solusi awal sebelum diarahkan
+      ke guru BK atau psikolog.
+    </p>
+  </div>
+</section>
+
+<!-- ================= ALUR ================= -->
+<section id="alur" class="section light">
+  <div class="container">
+    <h2 class="reveal">Alur Konsultasi</h2>
+
+    <div class="flow">
+      <div class="flow-item reveal">
+        <span>1</span>
+        <p>Siswa login ke sistem</p>
+      </div>
+      <div class="flow-item reveal">
+        <span>2</span>
+        <p>Memilih gejala yang dirasakan</p>
+      </div>
+      <div class="flow-item reveal">
+        <span>3</span>
+        <p>Sistem menganalisis dengan Forward Chaining</p>
+      </div>
+      <div class="flow-item reveal">
+        <span>4</span>
+        <p>Hasil diagnosis & solusi ditampilkan</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MANFAAT ================= -->
+<section id="manfaat" class="section">
+  <div class="container">
+    <h2 class="reveal">Manfaat Sistem</h2>
+
+    <div class="benefits">
+      <div class="benefit-card reveal">
+        <i class="bi bi-emoji-smile"></i>
+        <h4>Mudah Digunakan</h4>
+        <p>Antarmuka sederhana dan ramah bagi siswa.</p>
+      </div>
+
+      <div class="benefit-card reveal">
+        <i class="bi bi-clock-history"></i>
+        <h4>Hemat Waktu</h4>
+        <p>Memberikan solusi awal tanpa menunggu sesi BK.</p>
+      </div>
+
+      <div class="benefit-card reveal">
+        <i class="bi bi-shield-check"></i>
+        <h4>Aman & Terarah</h4>
+        <p>Data siswa terlindungi dan rekomendasi berbasis aturan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="cta">
+  <div class="container reveal">
+    <h2>Siap Memulai Konsultasi?</h2>
+    <p>
+      Konsultasi awal bisa membantu kamu memahami
+      masalah yang sedang dihadapi dengan lebih baik.
+    </p>
+
+    <a href="login.html" class="btn-primary">
+      Masuk ke Sistem
+    </a>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="fade-in">
+  <p>© 2025 SMK Kesehatan Muhammadiyah Kota Bogor</p>
+</footer>
+
+<!-- ================= SCROLL ANIMATION SCRIPT ================= -->
+<script>
+  const reveals = document.querySelectorAll(".reveal");
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+      }
+    });
+  }, { threshold: 0.15 });
+
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

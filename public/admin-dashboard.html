@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --white:#fff;
+  --bg:#f2f4f3;
+  --beige:#f6f4ef;
+  --border:#d1d5db;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --blue:#3b82f6;
+  --green:#22c55e;
+  --red:#ef4444;
+}
+
+*{box-sizing:border-box;font-family:Poppins,sans-serif}
+body{margin:0;background:var(--bg);color:var(--text)}
+
+/* ===== TOPBAR ===== */
+.topbar{
+  background:var(--white);
+  padding:18px 32px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.brand{font-weight:700;color:var(--blue)}
+.logout{background:var(--red);color:white;border:none;padding:8px 18px;border-radius:20px;cursor:pointer}
+
+/* ===== LAYOUT ===== */
+.layout{display:flex;min-height:calc(100vh - 70px)}
+.sidebar{
+  width:230px;background:var(--white);
+  border-right:1px solid var(--border);
+  padding:20px;
+}
+.menu{
+  padding:12px 14px;border-radius:12px;
+  cursor:pointer;margin-bottom:8px;font-weight:500;
+}
+.menu.active{background:#eff6ff;color:var(--blue)}
+.menu:hover{background:#f1f5f9}
+
+.content{flex:1;padding:40px}
+
+/* ===== CARD ===== */
+.card{
+  background:var(--white);
+  padding:28px;border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,.06);
+}
+.header h2{margin:0;color:var(--blue)}
+.muted{color:var(--muted);font-size:14px}
+.hidden{display:none}
+
+/* ===== LIST ITEM ===== */
+.item{
+  display:flex;justify-content:space-between;
+  align-items:flex-start;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  margin-top:12px;
+}
+.item.active{
+  border-color:var(--blue);
+  background:#eff6ff;
+}
+.actions button{
+  border:none;background:none;
+  cursor:pointer;font-weight:600;margin-left:8px;
+}
+.edit{color:var(--blue)}
+.delete{color:var(--red)}
+
+/* ===== FORM ===== */
+.form{display:flex;gap:12px;margin-top:20px}
+input,textarea,select{
+  padding:12px;border-radius:12px;
+  border:1px solid var(--border);width:100%;
+}
+button.primary{
+  background:linear-gradient(135deg,var(--blue),var(--green));
+  color:white;border:none;
+  padding:12px 22px;border-radius:14px;
+  cursor:pointer;font-weight:600;
+}
+
+/* ===== RULES (RAPI & TIDAK TUMPAH TINDIH) ===== */
+.rules-layout{
+  display:grid;
+  grid-template-columns:1.3fr 1fr;
+  gap:28px;
+  margin-top:24px;
+  align-items:flex-start;
+}
+
+/* ===== LIST RULES ===== */
+.rules-list{
+  max-height:520px;
+  overflow-y:auto;
+  padding-right:6px;
+}
+.rules-list .item{
+  cursor:pointer;
+}
+.rules-list .item strong{
+  display:block;
+  margin-bottom:4px;
+}
+.rules-list .item p{
+  margin:0;
+  font-size:13px;
+  line-height:1.4;
+}
+
+/* ===== FORM RULES ===== */
+.rules-form{
+  background:var(--beige);
+  padding:22px;
+  border-radius:18px;
+  border:1px solid var(--border);
+  position:sticky;
+  top:24px;
+}
+.rules-form label.muted{
+  display:block;
+  margin:14px 0 6px;
+  font-size:13px;
+}
+
+/* ===== CHECKBOX GRID (SUPER RAPI & DEKET) ===== */
+.checkbox-grid{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:6px;
+}
+
+.checkbox-grid label{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;                 /* JARAK checkbox ↔ teks (lebih dekat) */
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--white);
+  font-size:14px;
+  line-height:1.35;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+
+.checkbox-grid input{
+  margin-top:3px;           /* sejajar vertikal */
+  width:16px;
+  height:16px;
+  accent-color:var(--blue);
+  flex-shrink:0;
+}
+
+.checkbox-grid label:hover{
+  background:#eff6ff;
+  border-color:var(--blue);
+}
+
+.checkbox-grid label:has(input:checked){
+  background:#eff6ff;
+  border-color:var(--blue);
+}
+
+/* ===== ACTIONS ===== */
+.rules-actions{
+  display:flex;
+  gap:12px;
+  margin-top:22px;
+}
+
+/* ===== RIWAYAT ===== */
+.riwayat-item{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px;
+  margin-top:14px;
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+}
+.riwayat-item strong{
+  display:block;
+  margin-bottom:4px;
+}
+.riwayat-time{
+  font-size:13px;
+  color:#9ca3af;
+  white-space:nowrap;
+}
+.riwayat-item .actions button{
+  background:none;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  margin-right:8px;
+  font-size:14px;
+}
+
+/* ===== Jumlah ===== */
+.count{
+  background:#e5e7eb;
+  color:#1f2937;
+  font-size:12px;
+  padding:2px 8px;
+  border-radius:999px;
+  font-weight:600;
+  margin-left:8px;
+}
+
+.menu.active .count{
+  background:#3b82f6;
+  color:#fff;
+}
+
+
+
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="brand">Admin Panel – Sistem Pakar Konseling </div>
+  <button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<div class="layout">
+ <aside class="sidebar">
+  <div class="menu active" onclick="showTab('gejala',this)">
+    📌 Gejala <span class="count" id="countGejala">0</span>
+  </div>
+
+  <div class="menu" onclick="showTab('diagnosis',this)">
+    🧠 Diagnosis <span class="count" id="countDiagnosis">0</span>
+  </div>
+
+  <div class="menu" onclick="showTab('rules',this)">
+    🔗 Rules <span class="count" id="countRules">0</span>
+  </div>
+
+  <!-- 👇 INI YANG KURANG -->
+  <div class="menu" onclick="showTab('riwayat',this)">
+    📜 Riwayat <span class="count" id="countRiwayat">0</span>
+  </div>
+
+  <div class="menu" onclick="showTab('users',this)">
+    👥 Kelola User <span class="count" id="countUsers">0</span>
+  </div>
+</aside>
+  <main class="content">
+
+<!-- ================= GEJALA ================= -->
+<section id="gejala" class="card">
+  <div class="header">
+    <h2>Kelola Gejala</h2>
+    <p class="muted">CRUD data gejala</p>
+  </div>
+  <div id="gejalaList"></div>
+  <div class="form">
+    <input id="gejalaBaru" placeholder="Contoh: Sulit fokus belajar">
+    <button class="primary" onclick="tambahGejala()">Tambah</button>
+  </div>
+</section>
+
+<!-- ================= DIAGNOSIS ================= -->
+<section id="diagnosis" class="card hidden">
+  <div class="header">
+    <h2>Kelola Diagnosis</h2>
+    <p class="muted">CRUD hasil diagnosis</p>
+  </div>
+  <div id="diagnosisList"></div>
+  <div class="form">
+    <input id="diagNama" placeholder="Nama diagnosis">
+    <textarea id="diagDesc" placeholder="Deskripsi"></textarea>
+    <input id="diagTips" placeholder="Tips (pisahkan dengan koma)">
+    <button class="primary" onclick="tambahDiagnosis()">Tambah</button>
+  </div>
+</section>
+
+<!-- ================= RULES ================= -->
+<section id="rules" class="card hidden">
+  <div class="header">
+    <h2>Kelola Rules</h2>
+    <p class="muted">Relasi gejala & diagnosis</p>
+  </div>
+
+  <div class="rules-layout">
+
+    <div id="rulesList" class="rules-list"></div>
+
+    <div class="rules-form">
+      <input type="hidden" id="ruleId">
+
+      <label class="muted">Diagnosis</label>
+      <select id="ruleDiagnosis"></select>
+
+      <label class="muted">Gejala</label>
+      <div id="ruleGejala" class="checkbox-grid"></div>
+
+      <div class="rules-actions">
+        <button class="primary" id="ruleBtn" onclick="simpanRule()">Tambah Rule</button>
+        <button class="cancel-btn" onclick="resetRuleForm()">Batal</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= RIWAYAT KONSULTASI ================= -->
+<section id="riwayat" class="card hidden">
+  <div class="header">
+    <div style="margin:16px 0; display:flex; gap:12px; align-items:center">
+  <input
+    type="month"
+    id="filterBulan"
+    style="padding:10px;border-radius:12px;border:1px solid var(--border)"
+  >
+  <button class="primary" onclick="loadRiwayatAdmin()">
+    Filter
+  </button>
+  <button onclick="resetFilterRiwayat()">
+    Reset
+  </button>
+</div>
+    <h2>Riwayat Konsultasi Siswa</h2>
+    <p class="muted">
+      Daftar siswa yang telah melakukan konsultasi beserta hasilnya
+    </p>
+  </div>
+
+  <div id="riwayatAdmin"></div>
+</section>
+
+<!-- ================= KELOLA SISWA ================= -->
+<section id="users" class="card hidden">
+  <div class="header">
+    <h2>Kelola Data Siswa</h2>
+    <p class="muted">Tambah, ubah username & reset password siswa</p>
+  </div>
+
+  <div id="usersList"></div>
+
+  <div class="form">
+    <input id="userNama" placeholder="Nama siswa">
+    <input id="userUsername" placeholder="Username">
+    <input id="userPassword" placeholder="Password awal">
+    <button class="primary" onclick="tambahUser()">Tambah</button>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+/* ================= AUTH ================= */
+const token=localStorage.getItem("token");
+const user=JSON.parse(localStorage.getItem("user"));
+if(!token||!user||user.role!=="admin")location.href="/login.html";
+
+/* ================= TAB ================= */
+function showTab(id,el){
+  document.querySelectorAll("section").forEach(s=>s.classList.add("hidden"));
+  document.querySelectorAll(".menu").forEach(m=>m.classList.remove("active"));
+  document.getElementById(id).classList.remove("hidden");
+  el.classList.add("active");
+}
+
+/* ================= GEJALA ================= */
+async function loadGejala(){
+  const box=document.getElementById("gejalaList");
+  const res=await fetch("/api/gejala",{headers:{Authorization:`Bearer ${token}`}});
+  const data=await res.json();
+
+  document.getElementById("countGejala").innerText = data.length;
+
+  box.innerHTML="";
+  data.forEach(g=>{
+    box.innerHTML+=`
+      <div class="item">
+        <span>${g.nama_gejala}</span>
+        <div class="actions">
+          <button class="edit" onclick="editGejala(${g.id},'${g.nama_gejala}')">Edit</button>
+          <button class="delete" onclick="hapusGejala(${g.id})">Hapus</button>
+        </div>
+      </div>`;
+  });
+
+  loadRuleGejala(data);
+}
+
+async function tambahGejala(){
+  const v=document.getElementById("gejalaBaru").value.trim();
+  if(!v)return;
+  await fetch("/api/gejala",{method:"POST",
+    headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},
+    body:JSON.stringify({nama_gejala:v})
+  });
+  document.getElementById("gejalaBaru").value="";
+  loadGejala();
+}
+
+function editGejala(id,val){
+  const nama=prompt("Edit gejala:",val);
+  if(!nama)return;
+  fetch(`/api/gejala/${id}`,{
+    method:"PUT",
+    headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},
+    body:JSON.stringify({nama_gejala:nama})
+  }).then(loadGejala);
+}
+
+function hapusGejala(id){
+  if(confirm("Hapus gejala?"))
+    fetch(`/api/gejala/${id}`,{
+      method:"DELETE",
+      headers:{Authorization:`Bearer ${token}`}
+    }).then(loadGejala);
+}
+
+/* ================= DIAGNOSIS ================= */
+async function loadDiagnosis(){
+  const box = document.getElementById("diagnosisList");
+  const res = await fetch("/api/diagnosis", {
+    headers:{ Authorization:`Bearer ${token}` }
+  });
+
+  const data = await res.json();
+
+  // 👇 INI POSISINYA
+  document.getElementById("countDiagnosis").innerText = data.length;
+
+  box.innerHTML = "";
+  data.forEach(d=>{
+    box.innerHTML += `
+      <div class="item">
+        <div>
+          <strong>${d.nama_diagnosis}</strong>
+          <p class="muted">${d.deskripsi || ""}</p>
+        </div>
+        <div class="actions">
+          <button class="edit" onclick="editDiagnosis(${d.id})">Edit</button>
+          <button class="delete" onclick="hapusDiagnosis(${d.id})">Hapus</button>
+        </div>
+      </div>`;
+  });
+
+  loadRuleDiagnosis(data);
+}
+
+
+async function tambahDiagnosis(){
+  const nama=diagNama.value;
+  if(!nama)return;
+  await fetch("/api/diagnosis",{method:"POST",
+    headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},
+    body:JSON.stringify({nama_diagnosis:nama,deskripsi:diagDesc.value,tips:diagTips.value})
+  });
+  diagNama.value=diagDesc.value=diagTips.value="";
+  loadDiagnosis();
+}
+
+function editDiagnosis(id){
+  const nama=prompt("Edit nama diagnosis:");
+  if(!nama)return;
+  fetch(`/api/diagnosis/${id}`,{
+    method:"PUT",
+    headers:{'Content-Type':'application/json',Authorization:`Bearer ${token}`},
+    body:JSON.stringify({nama_diagnosis:nama})
+  }).then(loadDiagnosis);
+}
+
+function hapusDiagnosis(id){
+  if(confirm("Hapus diagnosis?"))
+    fetch(`/api/diagnosis/${id}`,{
+      method:"DELETE",
+      headers:{Authorization:`Bearer ${token}`}
+    }).then(loadDiagnosis);
+}
+
+/* ================= RULES ================= */
+function loadRuleGejala(data){
+  ruleGejala.innerHTML="";
+  data.forEach(g=>{
+    ruleGejala.innerHTML+=`
+      <label><input type="checkbox" value="${g.nama_gejala}"> ${g.nama_gejala}</label>`;
+  });
+}
+
+function loadRuleDiagnosis(data){
+  ruleDiagnosis.innerHTML="";
+  data.forEach(d=>{
+    ruleDiagnosis.innerHTML+=`<option value="${d.id}">${d.nama_diagnosis}</option>`;
+  });
+}
+
+
+/* ================= RULES CRUD (FIX FINAL) ================= */
+
+async function loadRules(){
+  const res = await fetch("/api/rules", {
+    headers:{ Authorization:`Bearer ${token}` }
+  });
+  const data = await res.json();
+
+  // 👇 INI TEMPAT YANG BENAR
+  document.getElementById("countRules").innerText = data.length;
+
+  rulesList.innerHTML = "";
+
+  data.forEach(r=>{
+    const gejala = JSON.parse(r.gejala_json||"[]");
+
+    rulesList.innerHTML += `
+      <div class="item" data-id="${r.id}">
+        <div onclick="selectRule(${r.id})">
+          <strong>${r.nama_diagnosis}</strong>
+          <p class="muted">${gejala.join(", ")}</p>
+        </div>
+        <div class="actions">
+          <button class="delete" onclick="event.stopPropagation();hapusRule(${r.id})">
+            Hapus
+          </button>
+        </div>
+      </div>`;
+  });
+}
+
+async function selectRule(id){
+  document.querySelectorAll(".rules-list .item")
+    .forEach(i=>i.classList.remove("active"));
+
+  const item=document.querySelector(`.rules-list [data-id='${id}']`);
+  item.classList.add("active");
+
+  const r = await fetch(`/api/rules/${id}`,{
+    headers:{ Authorization:`Bearer ${token}` }
+  }).then(r=>r.json());
+
+  ruleId.value = r.id;
+  ruleDiagnosis.value = r.id_diagnosis;
+
+  const gejala = JSON.parse(r.gejala_json||"[]");
+  document.querySelectorAll("#ruleGejala input")
+    .forEach(cb=>cb.checked = gejala.includes(cb.value));
+
+  ruleBtn.innerText = "Update Rule";
+}
+
+async function simpanRule(){
+  const id = ruleId.value;
+  const id_diagnosis = ruleDiagnosis.value;
+  const gejala = [...document.querySelectorAll("#ruleGejala input:checked")]
+    .map(cb=>cb.value);
+
+  if(!gejala.length){
+    alert("Pilih minimal satu gejala");
+    return;
+  }
+
+  const method = id ? "PUT" : "POST";
+  const url = id ? `/api/rules/${id}` : "/api/rules";
+
+  await fetch(url,{
+    method,
+    headers:{
+      "Content-Type":"application/json",
+      Authorization:`Bearer ${token}`
+    },
+    body:JSON.stringify({id_diagnosis,gejala_json:gejala})
+  });
+
+  resetRuleForm();
+  loadRules();
+}
+
+async function hapusRule(id){
+  if(!confirm("Hapus rule ini?"))return;
+
+  await fetch(`/api/rules/${id}`,{
+    method:"DELETE",
+    headers:{ Authorization:`Bearer ${token}` }
+  });
+
+  resetRuleForm();
+  loadRules();
+}
+
+function resetRuleForm(){
+  ruleId.value="";
+  ruleBtn.innerText="Tambah Rule";
+
+  document.querySelectorAll("#ruleGejala input")
+    .forEach(cb=>cb.checked=false);
+
+  document.querySelectorAll(".rules-list .item")
+    .forEach(i=>i.classList.remove("active"));
+}
+
+/* ================= RIWAYAT KONSULTASI ================= */
+async function loadRiwayatAdmin(){
+  const bulan = document.getElementById("filterBulan")?.value;
+
+  let url = "/api/riwayat";
+  if (bulan) {
+    url += `?bulan=${bulan}`;
+  }
+
+  const res = await fetch(url, {
+    headers:{ Authorization:`Bearer ${token}` }
+  });
+
+  const data = await res.json();
+
+  // 👇 TAMBAHKAN DI SINI
+  document.getElementById("countRiwayat").innerText = data.length;
+
+  const box = document.getElementById("riwayatAdmin");
+  box.innerHTML = "";
+
+  if(!data.length){
+    box.innerHTML = "<p class='muted'>Belum ada data riwayat konsultasi.</p>";
+    return;
+  }
+
+  data.forEach(r=>{
+    box.innerHTML += `
+      <div class="riwayat-item">
+        <div>
+          <strong>${r.nama_siswa}</strong>
+          <p><b>${r.diagnosis}</b></p>
+          <p class="muted">
+            Gejala: ${JSON.parse(r.gejala_json).join(", ")}
+          </p>
+          <p class="muted">
+            Catatan Admin: ${r.catatan_admin || "-"}
+          </p>
+
+          <div class="actions" style="margin-top:8px">
+            <button class="edit" onclick="editRiwayat(${r.id}, '${r.catatan_admin || ""}')">
+              Edit
+            </button>
+            <button class="delete" onclick="hapusRiwayat(${r.id})">
+              Hapus
+            </button>
+          </div>
+        </div>
+
+        <div class="riwayat-time">
+          ${new Date(r.created_at).toLocaleString()}
+        </div>
+      </div>
+    `;
+  });
+}
+
+function showTab(id,el){
+  document.querySelectorAll("section").forEach(s=>s.classList.add("hidden"));
+  document.querySelectorAll(".menu").forEach(m=>m.classList.remove("active"));
+
+  document.getElementById(id).classList.remove("hidden");
+  el.classList.add("active");
+
+  if(id === "riwayat"){
+    loadRiwayatAdmin();
+  }
+
+  // ===== TAMBAHAN UNTUK TAB SISWA =====
+  if(id === "users"){
+    loadUsers();
+  }
+}
+
+async function hapusRiwayat(id){
+  if(!confirm("Hapus riwayat konsultasi ini?")) return;
+
+  await fetch(`/api/riwayat/${id}`,{
+    method:"DELETE",
+    headers:{ Authorization:`Bearer ${token}` }
+  });
+
+  loadRiwayatAdmin();
+}
+
+async function editRiwayat(id, catatanLama){
+  const catatan = prompt("Edit catatan admin:", catatanLama);
+  if(catatan === null) return;
+
+  await fetch(`/api/riwayat/${id}`,{
+    method:"PUT",
+    headers:{
+      "Content-Type":"application/json",
+      Authorization:`Bearer ${token}`
+    },
+    body: JSON.stringify({
+      catatan_admin: catatan
+    })
+  });
+
+  loadRiwayatAdmin();
+}
+
+function resetFilterRiwayat(){
+  document.getElementById("filterBulan").value = "";
+  loadRiwayatAdmin();
+}
+
+/* ================= KELOLA SISWA (ADMIN) ================= */
+
+async function loadUsers(){
+  const res = await fetch("/api/users",{
+    headers:{ Authorization:`Bearer ${token}` }
+  });
+  const data = await res.json();
+
+  // 👇 TARUH DI SINI
+  document.getElementById("countUsers").innerText = data.length;
+
+  const box = document.getElementById("usersList");
+  box.innerHTML = "";
+
+  if(!data.length){
+    box.innerHTML = "<p class='muted'>Belum ada data siswa.</p>";
+    return;
+  }
+
+  data.forEach(u=>{
+    box.innerHTML += `
+      <div class="item">
+        <div>
+          <strong>${u.nama}</strong>
+          <p class="muted">@${u.username}</p>
+        </div>
+        <div class="actions">
+          <button class="edit"
+            onclick="editUser(${u.id}, '${u.nama}', '${u.username}')">
+            Edit
+          </button>
+          <button class="delete"
+            onclick="hapusUser(${u.id})">
+            Hapus
+          </button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+async function tambahUser(){
+  await fetch("/api/users",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      Authorization:`Bearer ${token}`
+    },
+    body:JSON.stringify({
+      nama: userNama.value,
+      username: userUsername.value,
+      password: userPassword.value
+    })
+  });
+
+  userNama.value = userUsername.value = userPassword.value = "";
+  loadUsers();
+}
+
+async function editUser(id, nama, username){
+  const newNama = prompt("Nama siswa:", nama);
+  if(!newNama) return;
+
+  const newUsername = prompt("Username:", username);
+  if(!newUsername) return;
+
+  const newPassword = prompt("Password baru (kosongkan jika tidak diubah):");
+
+  await fetch(`/api/users/${id}`,{
+    method:"PUT",
+    headers:{
+      "Content-Type":"application/json",
+      Authorization:`Bearer ${token}`
+    },
+    body:JSON.stringify({
+      nama: newNama,
+      username: newUsername,
+      password: newPassword || null
+    })
+  });
+
+  loadUsers();
+}
+
+async function hapusUser(id){
+  if(!confirm("Hapus akun siswa ini?")) return;
+
+  await fetch(`/api/users/${id}`,{
+    method:"DELETE",
+    headers:{ Authorization:`Bearer ${token}` }
+  });
+
+  loadUsers();
+}
+
+/* ================= INIT ================= */
+loadGejala(); loadDiagnosis(); loadRules();
+function logout(){
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  location.href="/login.html";
+}
+
+</script>
+
+</body>
+</html>

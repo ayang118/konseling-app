@@ -1,0 +1,410 @@
+/* ======================================================
+   GOOGLE FONT
+====================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ======================================================
+   RESET & BASE
+====================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(59,130,246,0.10), transparent 45%),
+    radial-gradient(900px 500px at 90% 10%, rgba(34,197,94,0.08), transparent 45%),
+    linear-gradient(180deg, #f8fafc, #f2f4f3);
+  color: #1f2937;
+  line-height: 1.7;
+}
+
+/* subtle noise (tajam tapi halus) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.015),
+      rgba(0,0,0,0.015) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+  opacity: .15;
+  z-index: -1;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ======================================================
+   VARIABLES
+====================================================== */
+:root {
+  --white: #ffffff;
+  --blue: #3b82f6;
+  --green: #22c55e;
+  --gray: #6b7280;
+  --border: #d1d5db;
+  --bg-soft: #f6f4ef;
+  --shadow-soft: 0 12px 30px rgba(0,0,0,.06);
+  --shadow-strong: 0 24px 60px rgba(0,0,0,.10);
+}
+
+/* ======================================================
+   CONTAINER
+====================================================== */
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 0 24px;
+}
+
+/* ======================================================
+   NAVBAR
+====================================================== */
+.navbar {
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 0;
+}
+
+.logo {
+  font-weight: 700;
+  color: var(--blue);
+  font-size: 18px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.nav-links a {
+  font-weight: 500;
+  font-size: 14px;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--green));
+  transition: .3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.btn-login,
+.btn-logout {
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: var(--blue);
+  color: white;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-logout {
+  background: #ef4444;
+}
+
+/* ======================================================
+   HERO
+====================================================== */
+.hero {
+  background:
+    radial-gradient(900px 400px at 20% 0%, rgba(59,130,246,0.18), transparent 45%),
+    linear-gradient(180deg, #ffffff, #f2f4f3);
+  padding: 120px 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 72px;
+  align-items: center;
+}
+
+.hero-text h1 {
+  font-size: 42px;
+  margin-bottom: 18px;
+  line-height: 1.2;
+}
+
+.hero-text p {
+  color: var(--gray);
+  margin-bottom: 34px;
+}
+
+.hero .btn-primary {
+  padding: 12px 28px;
+  font-size: 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--blue), var(--green));
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 12px 32px rgba(59,130,246,.45);
+  transition: .3s ease;
+}
+
+.hero .btn-primary:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 44px rgba(59,130,246,.55);
+}
+
+/* ======================================================
+   HERO CARDS
+====================================================== */
+.hero-cards {
+  display: grid;
+  gap: 24px;
+}
+
+.hero-card {
+  background: var(--white);
+  padding: 30px;
+  border-radius: 22px;
+  box-shadow: var(--shadow-soft);
+  transition: .35s ease;
+}
+
+.hero-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: var(--shadow-strong);
+}
+
+/* ======================================================
+   SECTION
+====================================================== */
+.section {
+  padding: 100px 0;
+}
+
+.section.light {
+  background:
+    linear-gradient(180deg, #f6f4ef, #eef2f7);
+}
+
+.section h2 {
+  text-align: center;
+  margin-bottom: 28px;
+  color: var(--blue);
+}
+
+.section-text {
+  max-width: 840px;
+  margin: auto;
+  color: var(--gray);
+  text-align: center;
+}
+
+/* ======================================================
+   FLOW & BENEFIT
+====================================================== */
+.flow,
+.benefits {
+  display: grid;
+  gap: 36px;
+  margin-top: 56px;
+}
+
+.flow {
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+}
+
+.benefits {
+  grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+}
+
+.flow-item,
+.benefit-card {
+  background: var(--white);
+  padding: 28px;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+  transition: .35s ease;
+}
+
+.flow-item:hover,
+.benefit-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-strong);
+}
+
+/* ======================================================
+   CTA
+====================================================== */
+.cta {
+  background:
+    linear-gradient(135deg, var(--blue), var(--green));
+  color: white;
+  text-align: center;
+  padding: 120px 24px;
+  margin: 100px auto;
+  border-radius: 42px;
+  box-shadow: 0 40px 80px rgba(0,0,0,.25);
+}
+
+.cta p {
+  margin: 18px 0 36px;
+}
+
+.cta .btn-primary {
+  padding: 12px 30px;
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+/* ======================================================
+   DASHBOARD SISWA
+====================================================== */
+.dashboard {
+  margin: 90px 0;
+}
+
+.dashboard .card {
+  max-width: 720px;
+  margin: auto;
+  background: var(--white);
+  padding: 38px;
+  border-radius: 24px;
+  box-shadow: var(--shadow-soft);
+}
+
+.dashboard-box {
+  margin-top: 34px;
+  padding: 28px;
+  background: #eff6ff;
+  border-radius: 20px;
+}
+
+.info-box {
+  margin-top: 30px;
+  padding: 22px;
+  background: #ecfdf5;
+  border-radius: 18px;
+  font-size: 14px;
+}
+
+/* ======================================================
+   KONSULTASI
+====================================================== */
+.wrap {
+  max-width: 900px;
+  margin: 90px auto;
+  padding: 46px;
+  background: var(--bg-soft);
+  border-radius: 30px;
+  box-shadow: var(--shadow-soft);
+}
+
+.subtitle {
+  color: var(--gray);
+  margin-bottom: 36px;
+}
+
+.gejala-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+  gap: 22px;
+  margin-bottom: 44px;
+}
+
+.gejala-item {
+  display: flex;
+  gap: 14px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 18px 20px;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: .3s ease;
+}
+
+.gejala-item:hover {
+  background: #eff6ff;
+  border-color: var(--blue);
+  transform: translateY(-3px);
+}
+
+/* ======================================================
+   BUTTON GENERAL
+====================================================== */
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue), var(--green));
+  color: white;
+  padding: 14px 30px;
+  border-radius: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: .25s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+}
+
+/* ======================================================
+   FOOTER
+====================================================== */
+footer {
+  text-align: center;
+  padding: 44px 20px;
+  background: #0f172a;
+  color: #9ca3af;
+  margin-top: 100px;
+}
+
+/* ======================================================
+   ANIMATION
+====================================================== */
+.fade-in {
+  animation: fadeIn .7s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(14px)}
+  to {opacity:1; transform:none}
+}
+
+/* SCROLL REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: all .8s ease;
+}
+
+.reveal.show {
+  opacity: 1;
+  transform: none;
+}
