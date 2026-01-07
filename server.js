@@ -60,9 +60,9 @@ app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 db.connect((err) => {
   if (err) {
     console.error("❌ Database connection failed:", err.message);
-    process.exit(1);
+  } else {
+    console.log("✅ Database connected!");
   }
-  console.log("✅ Database connected!");
 });
 
 // ==============================
